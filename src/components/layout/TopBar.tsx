@@ -4,6 +4,7 @@ import {
   Search, Bell, Settings, ChevronRight, User, LogOut, Shield, Moon, Menu,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { useAuth } from '../../contexts/AuthContext'
 
 const breadcrumbMap: Record<string, string[]> = {
   '/dashboard':           ['Overview', 'Dashboard'],
@@ -41,6 +42,22 @@ const iconBtn =
   'relative flex h-8 w-8 items-center justify-center rounded-md border border-line ' +
   'bg-bg-surface text-ink-secondary transition-colors hover:bg-bg-raised hover:text-ink-primary'
 
+function getInitials(name: string | null | undefined, email: string | null | undefined): string {
+  if (name && name.trim()) {
+    return name
+      .trim()
+      .split(/\s+/)
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+  if (email && email.trim()) {
+    return email.trim()[0].toUpperCase()
+  }
+  return 'A'
+}
+
 function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () => void) {
   useEffect(() => {
     function onMouseDown(e: MouseEvent) {
@@ -56,6 +73,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () =
 export function TopBar({ onMobileMenu }: { onMobileMenu?: () => void }) {
   const location = useLocation()
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const [showNotif, setShowNotif] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
   const [searchVal, setSearchVal] = useState('')
@@ -68,10 +86,15 @@ export function TopBar({ onMobileMenu }: { onMobileMenu?: () => void }) {
   const crumbs = breadcrumbMap[location.pathname] ?? ['Overview', 'Dashboard']
   const pageTitle = crumbs[crumbs.length - 1]
 
+  const photoURL = user?.photoURL
+  const displayName = user?.displayName
+  const email = user?.email
+  const initials = getInitials(displayName, email)
+
   return (
-    <header className="sticky top-0 z-20 flex h-14 flex-shrink-0 items-center justify-between gap-3 border-b border-line bg-bg-base px-4 sm:px-5">
+    <header className="sticky top-0 z-20 flex h-14 flex-shrink-0 items-center justify-between gap-2 border-b border-line bg-bg-base px-3 sm:px-5">
       {/* Left */}
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-2 sm:gap-3">
         <button
           onClick={onMobileMenu}
           className={cn(iconBtn, 'lg:hidden')}
@@ -89,30 +112,30 @@ export function TopBar({ onMobileMenu }: { onMobileMenu?: () => void }) {
               </span>
             ))}
           </div>
-          <h1 className="truncate text-[15px] font-semibold leading-none text-ink-primary font-display tracking-tight">
+          <h1 className="truncate text-[14px] sm:text-[15px] font-semibold leading-none text-ink-primary font-display tracking-tight">
             {pageTitle}
           </h1>
         </div>
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-2">
-        {/* Search */}
-        <div className="hidden md:flex items-center gap-2 w-[220px] rounded-md border border-line bg-bg-surface px-3 py-1.5 focus-within:border-brand-blue/50">
-          <Search size={13} className="text-ink-muted" />
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Search — hide on smallest screens */}
+        <div className="hidden md:flex items-center gap-2 w-[180px] xl:w-[220px] rounded-md border border-line bg-bg-surface px-3 py-1.5 focus-within:border-brand-blue/50">
+          <Search size={13} className="text-ink-muted shrink-0" />
           <input
             value={searchVal}
             onChange={e => setSearchVal(e.target.value)}
             placeholder="Search…"
-            className="w-full bg-transparent text-[12px] text-ink-primary placeholder:text-ink-muted outline-none"
+            className="w-full bg-transparent text-[12px] text-ink-primary placeholder:text-ink-muted outline-none min-w-0"
           />
-          <kbd className="rounded border border-line-mid bg-bg-raised px-1.5 py-px font-mono text-[9px] text-ink-muted">⌘K</kbd>
+          <kbd className="hidden xl:inline rounded border border-line-mid bg-bg-raised px-1.5 py-px font-mono text-[9px] text-ink-muted shrink-0">⌘K</kbd>
         </div>
 
         {/* System status */}
-        <div className="hidden sm:flex items-center gap-1.5 rounded-md border border-ok/25 bg-ok/10 px-2.5 py-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-ok shadow-[0_0_6px_rgba(76,195,138,0.8)] animate-pulse" />
-          <span className="font-mono text-[10.5px] font-medium text-ok">All Systems</span>
+        <div className="hidden sm:flex items-center gap-1.5 rounded-md border border-ok/25 bg-ok/10 px-2 py-1">
+          <span className="h-1.5 w-1.5 rounded-full bg-ok shadow-[0_0_6px_rgba(76,195,138,0.8)] animate-pulse shrink-0" />
+          <span className="font-mono text-[10px] font-medium text-ok">All Systems</span>
         </div>
 
         {/* Notifications */}
@@ -128,7 +151,7 @@ export function TopBar({ onMobileMenu }: { onMobileMenu?: () => void }) {
           {showNotif && (
             <div className={cn(
               'z-50 rounded-lg border border-line-mid bg-bg-surface shadow-2xl',
-              'fixed left-4 right-4 top-14',
+              'fixed left-3 right-3 top-14',
               'sm:absolute sm:left-auto sm:right-0 sm:top-[calc(100%+6px)] sm:w-80',
               'max-w-[400px] max-h-[75vh] overflow-y-auto',
             )}>
@@ -167,34 +190,68 @@ export function TopBar({ onMobileMenu }: { onMobileMenu?: () => void }) {
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => { setShowProfile(v => !v); setShowNotif(false) }}
-            className="flex items-center gap-2 rounded-md border border-line bg-bg-surface px-1.5 py-1 transition-colors hover:bg-bg-raised"
+            className="flex items-center gap-1.5 sm:gap-2 rounded-md border border-line bg-bg-surface px-1.5 py-1 transition-colors hover:bg-bg-raised"
           >
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-brand-blue to-brand-cyan text-[11px] font-bold text-white">
-              A
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-brand-blue to-brand-cyan text-[10px] font-bold text-white overflow-hidden shrink-0">
+              {photoURL ? (
+                <img src={photoURL} alt="" className="h-full w-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
-            <div className="hidden sm:block pr-1 text-left">
-              <div className="text-[12px] font-medium leading-tight text-ink-primary">Admin</div>
-              <div className="text-[10px] leading-tight text-ink-muted">Super Admin</div>
+            <div className="hidden sm:block pr-1 text-left min-w-0 max-w-[130px]">
+              <div className="text-[12px] font-medium leading-tight text-ink-primary truncate">
+                {displayName ?? 'User'}
+              </div>
+              <div className="text-[10px] leading-tight text-ink-muted truncate">
+                {email ?? ''}
+              </div>
             </div>
           </button>
           {showProfile && (
             <div className={cn(
-              'z-50 rounded-lg border border-line-mid bg-bg-surface shadow-2xl',
-              'fixed right-4 left-auto top-14 w-56',
-              'sm:absolute sm:right-0 sm:top-[calc(100%+6px)] sm:w-48',
-              'overflow-hidden',
+              'z-50 rounded-lg border border-line-mid bg-bg-surface shadow-2xl overflow-hidden',
+              'fixed right-3 left-3 top-14',
+              'sm:absolute sm:left-auto sm:right-0 sm:top-[calc(100%+6px)] sm:w-56',
             )}>
+              {/* User info header */}
+              <div className="border-b border-line px-3.5 py-3 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-blue to-brand-cyan text-[13px] font-bold text-white overflow-hidden shrink-0">
+                  {photoURL ? (
+                    <img src={photoURL} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    initials
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13px] font-medium text-ink-primary truncate">
+                    {displayName ?? 'User'}
+                  </div>
+                  <div className="text-[11px] text-ink-muted truncate">
+                    {email ?? ''}
+                  </div>
+                </div>
+              </div>
+
               {[
                 { icon: User, label: 'My Profile', href: '/profile' },
                 { icon: Shield, label: 'Security', href: '/security' },
                 { icon: Moon, label: 'Preferences', href: '/preferences' },
-                { icon: LogOut, label: 'Sign Out', danger: true },
-              ].map(({ icon: Icon, label, danger, href }) => (
+                { icon: LogOut, label: 'Sign Out', danger: true, action: 'logout' },
+              ].map(({ icon: Icon, label, danger, href, action }) => (
                 <button
                   key={label}
-                  onClick={() => { if (href) { setShowProfile(false); navigate(href) } }}
+                  onClick={() => {
+                    if (action === 'logout') {
+                      setShowProfile(false)
+                      logout()
+                    } else if (href) {
+                      setShowProfile(false)
+                      navigate(href)
+                    }
+                  }}
                   className={cn(
-                    'flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-[12px] transition-colors min-h-[40px]',
+                    'flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-[12px] transition-colors min-h-[40px]',
                     danger
                       ? 'text-bad hover:bg-bad/10'
                       : 'text-ink-secondary hover:bg-bg-raised hover:text-ink-primary'
