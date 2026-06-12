@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate, NavLink } from 'react-router-dom'
-import { Box, Plus, Search, Filter, RefreshCw, ArrowLeft, Sparkles, Factory, Zap as ZapIcon, Wrench, Droplets, Cpu } from 'lucide-react'
+import { Plus, Search, Filter, RefreshCw, ArrowLeft, Sparkles, Factory, Zap as ZapIcon, Wrench, Droplets, Cpu } from 'lucide-react'
 
 const twinsData = [
   { id: 'KV-009', name: 'Factory Floor A', type: 'Manufacturing', status: 'online', devices: 142, accuracy: 99.4, sync: '2s ago', model: 'Physics v4.2' },

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Moon, Bell, Globe, Palette, ArrowLeft, Save } from 'lucide-react'
+import { Moon, Bell, Palette, ArrowLeft, Save } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {

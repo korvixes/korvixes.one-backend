@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Bell, AlertTriangle, CheckCircle, XCircle, Info, ArrowLeft } from 'lucide-react'
+import { AlertTriangle, CheckCircle, XCircle, Info, ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '../lib/utils'
 

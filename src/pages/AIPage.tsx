@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
-  Brain, TrendingUp, AlertTriangle, Zap, Target,
+  Brain, AlertTriangle, Zap, Target,
   ArrowUp, ArrowDown, RefreshCw, ChevronRight,
-  Activity, Eye, Play, Sparkles, BarChart2, Wand2
+  Activity, Play, Sparkles, BarChart2, Wand2
 } from 'lucide-react'
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
+  AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, Tooltip, ResponsiveContainer,
   CartesianGrid, RadarChart, Radar, PolarGrid,
   PolarAngleAxis

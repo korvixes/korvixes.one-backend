@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Shield, Key, Eye, EyeOff, Check, Copy, ArrowLeft, Clock, Smartphone } from 'lucide-react'
+import { Shield, Key, Eye, EyeOff, Copy, ArrowLeft, Clock, Smartphone } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {

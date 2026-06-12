@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Filter, RefreshCw, ArrowLeft, Box } from 'lucide-react'
+import { Search, Filter, RefreshCw } from 'lucide-react'
 
 const twinsData = [
   { id: 'KV-009', name: 'Factory Floor A', type: 'Manufacturing', status: 'online', devices: 142, accuracy: 99.4, sync: '2s ago', model: 'Physics v4.2' },

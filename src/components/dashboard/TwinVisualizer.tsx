@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Cpu, Zap, Activity, Thermometer, GitBranch, Settings2, Wifi } from 'lucide-react'
+import { Cpu, Zap, Activity, Thermometer, Settings2, Wifi } from 'lucide-react'
 
 const nodes = [
   { id: 'compressor', label: 'Compressor A', x: 15, y: 20, status: 'online', metric: '3,200 rpm', icon: Cpu },

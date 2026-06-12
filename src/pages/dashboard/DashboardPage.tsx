@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Play, Radio, Brain, Activity, Users, TrendingUp, Cpu, Database, Zap, X, BarChart2, Clock, CheckCircle } from 'lucide-react'
+import { Box, Play, Radio, Brain, Activity, Users, X, BarChart2 } from 'lucide-react'
 import { MetricCard } from '../../components/dashboard/MetricCard'
 import { TwinVisualizer } from '../../components/dashboard/TwinVisualizer'
 import { SystemHealth } from '../../components/dashboard/SystemHealth'

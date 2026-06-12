@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Database, Box, Play, Brain, Zap, CheckCircle } from 'lucide-react'
+import { Database, Box, Play, Brain, Zap } from 'lucide-react'
 
 const stages = [
   { label: 'Data Source',       sublabel: 'IoT · ERP · SCADA',      icon: Database, color: '#2A6BDB', status: 'active' },

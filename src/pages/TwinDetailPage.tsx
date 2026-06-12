@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Box, Cpu, Activity, Wifi, Zap, Clock, CheckCircle, AlertTriangle, XCircle, Play, RefreshCw } from 'lucide-react'
+import { ArrowLeft, Box, Cpu, Activity, Wifi, Zap, Clock, Play, RefreshCw } from 'lucide-react'
 import {
-  AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
+  AreaChart, Area, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid,
 } from 'recharts'
 

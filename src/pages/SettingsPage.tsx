@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Settings, Shield, CreditCard, Bell,
-  Save, RefreshCw, Eye, EyeOff, Copy,
-  Check, Zap, Globe, Lock, Key, Webhook,
+  Save, Eye, EyeOff, Copy,
+  Check, Key,
   Mail, Slack, MessageSquare, AlertTriangle
 } from 'lucide-react'
 

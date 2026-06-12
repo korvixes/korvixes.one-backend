@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
     "firebase": "^12.14.0",
     "framer-motion": "^11.11.17",
     "lucide-react": "^0.468.0",

@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import {
   Users, UserPlus, Shield, Activity, Search,
-  Filter, MoreHorizontal, Edit2, Trash2,
-  Key, Eye, Clock, CheckCircle, XCircle,
-  ChevronDown
+  Filter, Edit2,
+  Key, Eye, Clock, CheckCircle, XCircle
 } from 'lucide-react'
 
 const users = [

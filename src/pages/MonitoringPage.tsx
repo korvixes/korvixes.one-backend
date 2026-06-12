@@ -3,10 +3,10 @@ import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Cpu, MemoryStick, HardDrive, Activity, Zap,
   Server, AlertTriangle, CheckCircle, RefreshCw,
-  TrendingUp, TrendingDown, Clock
+  TrendingUp, Clock
 } from 'lucide-react'
 import {
-  LineChart, Line, AreaChart, Area,
+  LineChart, Line,
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from 'recharts'
 

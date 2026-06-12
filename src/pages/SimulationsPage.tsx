@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Play, Pause, StopCircle, RefreshCw, Plus,
-  Search, Filter, Clock, Cpu, MemoryStick,
+  Search, Filter, Clock, Cpu,
   ChevronRight, BarChart2, AlertTriangle, CheckCircle,
   XCircle, Timer, Layers, Settings2, Download
 } from 'lucide-react'

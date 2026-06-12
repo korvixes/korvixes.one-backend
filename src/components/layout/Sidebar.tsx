@@ -3,9 +3,11 @@ import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Box, Play, Brain, Server, Activity,
   Users, BarChart2, Settings, ChevronDown, ChevronRight,
-  PanelLeftClose, PanelLeft, Hexagon, X,
+  PanelLeftClose, PanelLeft, X,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
+
+import logoHeader from '../../assets/logo-header.webp'
 
 interface NavChild { label: string; href: string }
 interface NavItemDef {
@@ -200,20 +202,28 @@ export function Sidebar({
     >
       {/* Logo */}
       <div className={cn(
-        'flex items-center gap-2.5 border-b border-line px-3 min-h-[56px] flex-shrink-0',
+        'group flex items-center gap-2.5 border-b border-line px-3 min-h-[56px] flex-shrink-0',
         collapsed && 'justify-center px-0'
       )}>
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-brand-blue/40 bg-brand-blue/15">
-          <Hexagon size={14} strokeWidth={1.6} className="text-brand-blue" />
-        </div>
-        {!collapsed && (
-          <div className="min-w-0 flex-1">
-            <div className="font-display text-[13px] font-bold tracking-[0.06em] leading-none">
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">KORVI</span>
-              <span className="text-ink-primary">XES</span>
+        {collapsed ? (
+          <img
+            src={logoHeader}
+            alt="K"
+            className="h-7 w-7 shrink-0 rounded object-contain brightness-0 invert-[0.7] transition-all duration-300 group-hover:scale-110 group-hover:brightness-100"
+          />
+        ) : (
+          <>
+            <img
+              src={logoHeader}
+              alt="KORVIXES"
+              className="h-10 sm:h-11 max-w-[160px] object-contain transition-all duration-300 group-hover:scale-[1.02] group-hover:drop-shadow-[0_0_6px_rgba(42,107,219,0.4)]"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-muted leading-tight">
+                Admin Console
+              </div>
             </div>
-            <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.18em] text-ink-muted">Admin Console</div>
-          </div>
+          </>
         )}
         {mobileOpen && (
           <button

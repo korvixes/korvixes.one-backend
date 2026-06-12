@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
   BarChart2, TrendingUp, Download, Calendar,
-  FileText, Filter, RefreshCw, ArrowUp, ArrowDown,
+  FileText, Filter, ArrowUp, ArrowDown,
   Activity, Layers, Brain, Cpu
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, PieChart, Pie, Cell, Legend
+  CartesianGrid, PieChart, Pie, Cell
 } from 'recharts'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

@@ -3,8 +3,8 @@ import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Server, Database, Network, Wifi, WifiOff,
   Plus, RefreshCw, Search, Filter, Settings2,
-  Activity, HardDrive, Layers, Link, Cpu,
-  CheckCircle, AlertTriangle, XCircle, Clock, Zap, Boxes
+  Activity,
+  CheckCircle, AlertTriangle, Zap, Boxes
 } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
