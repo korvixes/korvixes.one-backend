@@ -3,7 +3,7 @@ import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Server, Database, Network, Wifi, WifiOff,
   Plus, RefreshCw, Search, Filter, Settings2,
-  Activity,
+  Activity, Link,
   CheckCircle, AlertTriangle, Zap, Boxes
 } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'

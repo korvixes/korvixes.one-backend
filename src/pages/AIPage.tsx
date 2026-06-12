@@ -3,7 +3,7 @@ import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Brain, AlertTriangle, Zap, Target,
   ArrowUp, ArrowDown, RefreshCw, ChevronRight,
-  Activity, Play, Sparkles, BarChart2, Wand2
+  Activity, Eye, Play, Sparkles, BarChart2, Wand2
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar,
