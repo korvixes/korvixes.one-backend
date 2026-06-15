@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
+import { useToast } from '../hooks/useToast'
 import {
   Cpu, MemoryStick, HardDrive, Activity, Zap,
   Server, AlertTriangle, CheckCircle, RefreshCw,
@@ -53,6 +54,7 @@ const alertConf = {
 } as const
 
 export function MonitoringPage() {
+  const { notify } = useToast()
   const [tab, setTab] = useRouteTab('/monitoring', ['health', 'performance', 'sync', 'resources'] as const, 'health')
   const subtitle = ({
     health: '// System health overview · Real-time',
@@ -78,9 +80,9 @@ export function MonitoringPage() {
           <h1 className="page-title">System Monitoring</h1>
           <p className="page-subtitle">{subtitle}</p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn btn-ghost btn-sm"><RefreshCw size={12} /> Refresh</button>
-          <span className="badge badge-info" style={{ alignSelf: 'center' }}><span className="dot-live" />&nbsp;Live</span>
+        <div className="flex gap-2" style={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => notify('Refreshing monitoring data...', 'info')}><RefreshCw size={12} /> Refresh</button>
+          <span className="badge badge-info"><span className="dot-live" />&nbsp;Live</span>
         </div>
       </div>
 
@@ -107,7 +109,7 @@ export function MonitoringPage() {
             <span className="card-title">Sync Pipelines</span>
             <span className="badge badge-success"><span className="dot dot-success" /> All synced</span>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
           <table className="data-table">
             <thead><tr><th>SOURCE</th><th>TARGET TWIN</th><th>RATE</th><th>LAST SYNC</th><th>STATUS</th></tr></thead>
             <tbody>
@@ -226,7 +228,7 @@ export function MonitoringPage() {
             <span className="card-title">Compute Nodes</span>
             <span className="text-muted text-xs text-mono">{nodes.length} nodes registered</span>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>

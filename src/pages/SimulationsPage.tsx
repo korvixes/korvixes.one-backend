@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useToast } from '../hooks/useToast'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Play, Pause, StopCircle, RefreshCw, Plus,
@@ -46,6 +47,7 @@ export function SimulationsPage() {
   const [tab, setTab] = useRouteTab('/simulations', ['all', 'running', 'completed', 'failed'] as const, 'all')
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<string | null>(null)
+  const { notify } = useToast()
 
   const filtered = simulations.filter(s => {
     if (tab === 'running'   && s.status !== 'running')   return false
@@ -72,9 +74,9 @@ export function SimulationsPage() {
           <h1 className="page-title">Simulation Management</h1>
           <p className="page-subtitle">// {counts.running} active · {counts.completed} completed · {counts.failed} failed today</p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn btn-ghost btn-sm"><Download size={12} /> Export</button>
-          <button className="btn btn-primary btn-sm"><Plus size={13} /> New Simulation</button>
+        <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => notify('Exporting simulation data...', 'info')}><Download size={12} /> Export</button>
+          <button className="btn btn-primary btn-sm" onClick={() => notify('Opening new simulation wizard...', 'info')}><Plus size={13} /> New Simulation</button>
         </div>
       </div>
 
@@ -113,17 +115,17 @@ export function SimulationsPage() {
                 ))}
               </div>
             </div>
-            <div className="flex gap-2" style={{ flexShrink: 0 }}>
+            <div className="flex items-center gap-2" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
               <div className="search-bar" style={{ width: 200, maxWidth: '100%' }}>
                 <Search size={12} color="var(--text-muted)" />
                 <input placeholder="Search simulations..." value={search} onChange={e => setSearch(e.target.value)} />
               </div>
-              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Filter"><Filter size={13} /></button>
-              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Refresh"><RefreshCw size={13} /></button>
+              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Filter" onClick={() => notify('Filter options opened', 'info')}><Filter size={13} /></button>
+              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Refresh" onClick={() => notify('Refreshing simulation list...', 'info')}><RefreshCw size={13} /></button>
             </div>
           </div>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="data-table">
+          <div className="data-table-wrapper">
+            <table className="data-table sims-data-table">
               <thead>
                 <tr>
                   <th>ID / NAME</th>
@@ -179,14 +181,14 @@ export function SimulationsPage() {
                         <div className="flex gap-1">
                           {sim.status === 'running' && (
                             <>
-                              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Pause"><Pause size={11} /></button>
-                              <button className="btn btn-danger btn-sm btn-icon" data-tooltip="Stop"><StopCircle size={11} /></button>
+                              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Pause" onClick={() => notify('Simulation paused', 'success')}><Pause size={11} /></button>
+                              <button className="btn btn-danger btn-sm btn-icon" data-tooltip="Stop" onClick={() => notify('Stopping simulation...', 'error')}><StopCircle size={11} /></button>
                             </>
                           )}
                           {sim.status === 'failed' && (
-                            <button className="btn btn-secondary btn-sm btn-icon" data-tooltip="Retry"><RefreshCw size={11} /></button>
+                            <button className="btn btn-secondary btn-sm btn-icon" data-tooltip="Retry" onClick={() => notify('Retrying failed simulation...', 'info')}><RefreshCw size={11} /></button>
                           )}
-                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Details"><ChevronRight size={11} /></button>
+                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Details" onClick={() => notify('Opening simulation details...', 'info')}><ChevronRight size={11} /></button>
                         </div>
                       </td>
                     </tr>
@@ -263,8 +265,8 @@ export function SimulationsPage() {
                 )}
                 {selectedSim.status === 'running' && (
                   <div className="flex gap-2">
-                    <button className="btn btn-secondary btn-sm" style={{ flex: 1 }}><Pause size={12} /> Pause</button>
-                    <button className="btn btn-danger btn-sm" style={{ flex: 1 }}><StopCircle size={12} /> Stop</button>
+                    <button className="btn btn-secondary btn-sm" style={{ flex: 1 }} onClick={() => notify('Simulation paused', 'success')}><Pause size={12} /> Pause</button>
+                    <button className="btn btn-danger btn-sm" style={{ flex: 1 }} onClick={() => notify('Stopping simulation...', 'error')}><StopCircle size={12} /> Stop</button>
                   </div>
                 )}
               </div>
@@ -287,7 +289,7 @@ export function SimulationsPage() {
             </div>
             <div style={{ padding: '12px 4px 8px' }}>
               <ResponsiveContainer width="100%" height={140}>
-                <AreaChart data={throughputData} margin={{ top: 0, right: 12, bottom: 0, left: -20 }}>
+                <AreaChart data={throughputData} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
                   <defs>
                     <linearGradient id="simGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#2A6BDB" stopOpacity={0.3} />
@@ -313,12 +315,12 @@ export function SimulationsPage() {
             <div className="card-header"><span className="card-title">Quick Actions</span></div>
             <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
-                { icon: Play,         label: 'Run All Queued',      color: 'var(--cyan)' },
-                { icon: AlertTriangle, label: 'Investigate Failed',  color: 'var(--warning)' },
-                { icon: Settings2,    label: 'Simulation Settings',  color: 'var(--blue)' },
-                { icon: Download,     label: 'Export Results',       color: 'var(--success)' },
+                { icon: Play,         label: 'Run All Queued',      color: 'var(--cyan)',   msg: 'Running all queued simulations...' },
+                { icon: AlertTriangle, label: 'Investigate Failed',  color: 'var(--warning)', msg: 'Investigating failed simulations...' },
+                { icon: Settings2,    label: 'Simulation Settings',  color: 'var(--blue)',   msg: 'Opening simulation settings...' },
+                { icon: Download,     label: 'Export Results',       color: 'var(--success)', msg: 'Exporting results...' },
               ].map(a => (
-                <button key={a.label} className="btn btn-ghost" style={{ justifyContent: 'flex-start', width: '100%', gap: 10 }}>
+                <button key={a.label} className="btn btn-ghost" style={{ justifyContent: 'flex-start', width: '100%', gap: 10 }} onClick={() => notify(a.msg, 'info')}>
                   <a.icon size={13} color={a.color} />
                   <span style={{ fontSize: 12.5 }}>{a.label}</span>
                 </button>

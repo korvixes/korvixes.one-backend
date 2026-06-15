@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouteTab } from '../hooks/useRouteTab'
+import { useToast } from '../hooks/useToast'
 import {
   Brain, AlertTriangle, Zap, Target,
   ArrowUp, ArrowDown, RefreshCw, ChevronRight,
@@ -61,6 +62,7 @@ const severityConfig = {
 
 export function AIPage() {
   const [activeTab, setActiveTab] = useRouteTab('/ai', ['predictions', 'models', 'risk', 'optimization'] as const, 'predictions')
+  const { notify } = useToast()
 
   return (
     <div className="page animate-in">
@@ -69,9 +71,9 @@ export function AIPage() {
           <h1 className="page-title">AI Prediction Center</h1>
           <p className="page-subtitle">// 5 active models · 391 predictions · 95.4% avg accuracy</p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn btn-ghost btn-sm"><RefreshCw size={12} /> Refresh Models</button>
-          <button className="btn btn-primary btn-sm"><Sparkles size={13} /> Train New Model</button>
+        <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => notify('Refreshing AI models...', 'info')}><RefreshCw size={12} /> Refresh Models</button>
+          <button className="btn btn-primary btn-sm" onClick={() => notify('Starting model training...', 'info')}><Sparkles size={13} /> Train New Model</button>
         </div>
       </div>
 
@@ -101,7 +103,7 @@ export function AIPage() {
 
       {/* Tab navigation */}
       <div className="tab-list-wrap" style={{ marginBottom: 16 }}>
-        <div className="tab-list" style={{ display: 'inline-flex' }}>
+        <div className="tab-list">
           {([
             { id: 'predictions', label: 'Predictions', icon: Activity },
             { id: 'models', label: 'Forecast Models', icon: Brain },
@@ -125,24 +127,24 @@ export function AIPage() {
               const sev = severityConfig[p.severity as keyof typeof severityConfig]
               return (
                 <div key={p.id} className="card animate-in" style={{ padding: '16px 18px' }}>
-                  <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between" style={{ marginBottom: 10, gap: 8 }}>
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className={`badge ${sev.cls}`}>{sev.label}</span>
                       <span className="text-mono text-xs text-muted">{p.id}</span>
                       <span className="text-secondary text-xs">{p.type}</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>ETA: {p.eta}</span>
-                      <button className="btn btn-ghost btn-sm btn-icon"><ChevronRight size={12} /></button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>ETA: {p.eta}</span>
+                      <button className="btn btn-ghost btn-sm btn-icon" onClick={() => notify('Opening prediction details...', 'info')}><ChevronRight size={12} /></button>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 3 }}>{p.description}</div>
+                  <div className="flex items-start justify-between" style={{ gap: 12 }}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 3, wordWrap: 'break-word' }}>{p.description}</div>
                       <div className="text-muted text-xs text-mono">{p.model} · {p.twin}</div>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-display)', color: sev.bar }}>{p.value}</div>
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-display)', color: sev.bar, whiteSpace: 'nowrap' }}>{p.value}</div>
                       <div className="text-muted text-xs text-mono">{p.confidence}% confidence</div>
                     </div>
                   </div>
@@ -161,7 +163,7 @@ export function AIPage() {
               <div className="card-header"><span className="card-title">Accuracy Trend (30d)</span></div>
               <div style={{ padding: '12px 4px 8px' }}>
                 <ResponsiveContainer width="100%" height={160}>
-                  <AreaChart data={accuracyHistory} margin={{ top: 0, right: 12, bottom: 0, left: -20 }}>
+                  <AreaChart data={accuracyHistory} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
                     <defs>
                       <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#4CC38A" stopOpacity={0.3} />
@@ -199,10 +201,10 @@ export function AIPage() {
           <div className="card">
             <div className="card-header">
               <span className="card-title">Deployed Models</span>
-              <button className="btn btn-primary btn-sm"><Play size={12} /> Run Inference</button>
+              <button className="btn btn-primary btn-sm" onClick={() => notify('Running inference on all models...', 'info')}><Play size={12} /> Run Inference</button>
             </div>
-            <div style={{ overflowX: 'auto' }}>
-              <table className="data-table">
+            <div className="data-table-wrapper">
+              <table className="data-table ai-models-table">
                 <thead>
                   <tr>
                     <th>MODEL</th>
@@ -246,8 +248,8 @@ export function AIPage() {
                       </td>
                       <td>
                         <div className="flex gap-1">
-                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="View Details"><Eye size={11} /></button>
-                          <button className="btn btn-secondary btn-sm btn-icon" data-tooltip="Retrain"><RefreshCw size={11} /></button>
+                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="View Details" onClick={() => notify('Opening model details...', 'info')}><Eye size={11} /></button>
+                          <button className="btn btn-secondary btn-sm btn-icon" data-tooltip="Retrain" onClick={() => notify('Retraining model...', 'info')}><RefreshCw size={11} /></button>
                         </div>
                       </td>
                     </tr>
@@ -269,7 +271,7 @@ export function AIPage() {
             </div>
             <div style={{ padding: '12px 4px 8px' }}>
               <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={riskData} margin={{ top: 0, right: 16, bottom: 0, left: -20 }}>
+                <BarChart data={riskData} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
                   <CartesianGrid stroke="#1C2030" strokeDasharray="3 3" vertical={false} />
                   <XAxis dataKey="month" tick={{ fontSize: 9, fill: '#4A5168', fontFamily: 'JetBrains Mono' }} />
                   <YAxis tick={{ fontSize: 9, fill: '#4A5168', fontFamily: 'JetBrains Mono' }} />
@@ -289,8 +291,8 @@ export function AIPage() {
                 return (
                   <div key={p.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 12px', background: 'var(--bg-overlay)', borderRadius: 7, border: `1px solid ${sev.bar}28` }}>
                     <AlertTriangle size={14} color={sev.bar} style={{ marginTop: 2, flexShrink: 0 }} />
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 12.5, fontWeight: 500, marginBottom: 3 }}>{p.description}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12.5, fontWeight: 500, marginBottom: 3, wordWrap: 'break-word' }}>{p.description}</div>
                       <div className="text-muted text-xs text-mono">{p.twin} · {p.eta}</div>
                     </div>
                     <span className={`badge ${sev.cls}`}>{sev.label}</span>
@@ -319,14 +321,14 @@ export function AIPage() {
                 </div>
                 <div style={{ fontWeight: 600, fontSize: 13.5, marginBottom: 4 }}>{o.title}</div>
                 <div className="text-secondary text-xs" style={{ marginBottom: 12 }}>{o.desc}</div>
-                <div className="flex items-center justify-between" style={{ paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                <div className="flex items-start justify-between" style={{ paddingTop: 10, borderTop: '1px solid var(--border)', gap: 8 }}>
                   <div>
                     <div className="text-muted text-xs text-mono">PROJECTED IMPACT</div>
                     <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--success)', fontSize: 16 }}>{o.impact}</div>
                   </div>
-                  <div className="flex gap-2">
-                    <button className="btn btn-ghost btn-sm">Dismiss</button>
-                    <button className="btn btn-primary btn-sm"><Zap size={11} /> Apply</button>
+                  <div className="flex gap-2 shrink-0" style={{ flexWrap: 'wrap' }}>
+                    <button className="btn btn-ghost btn-sm" onClick={() => notify('Optimization dismissed', 'success')}>Dismiss</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => notify('Applying optimization...', 'success')}><Zap size={11} /> Apply</button>
                   </div>
                 </div>
               </div>

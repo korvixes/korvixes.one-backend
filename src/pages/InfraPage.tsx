@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useToast } from '../hooks/useToast'
 import { useRouteTab } from '../hooks/useRouteTab'
 import {
   Server, Database, Network, Wifi, WifiOff,
@@ -45,6 +46,7 @@ const statusConf = {
 export function InfraPage() {
   const [tab, setTab] = useRouteTab('/infra', ['devices', 'sources', 'erp', 'api'] as const, 'devices')
   const [search, setSearch] = useState('')
+  const { notify } = useToast()
 
   const onlineCount  = iotDevices.filter(d => d.status === 'online').length
   const warningCount = iotDevices.filter(d => d.status === 'warning').length
@@ -61,9 +63,9 @@ export function InfraPage() {
           <h1 className="page-title">Infrastructure</h1>
           <p className="page-subtitle">// {onlineCount} online · {warningCount} warnings · {offlineCount} offline</p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn btn-ghost btn-sm"><RefreshCw size={12} /> Sync All</button>
-          <button className="btn btn-primary btn-sm"><Plus size={13} /> Add Device</button>
+        <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => notify('Refreshing data...', 'info')}><RefreshCw size={12} /> Sync All</button>
+          <button className="btn btn-primary btn-sm" onClick={() => notify('Opening creation form...', 'info')}><Plus size={13} /> Add Device</button>
         </div>
       </div>
 
@@ -154,14 +156,14 @@ export function InfraPage() {
                 <Search size={12} color="var(--text-muted)" />
                 <input placeholder="Search devices..." value={search} onChange={e => setSearch(e.target.value)} />
               </div>
-              <button className="btn btn-ghost btn-sm btn-icon"><Filter size={12} /></button>
+              <button className="btn btn-ghost btn-sm btn-icon" onClick={() => notify('Filter options opened', 'info')}><Filter size={12} /></button>
             </div>
             <div className="flex items-center gap-3" style={{ flexShrink: 0 }}>
               <span className="text-muted text-xs text-mono">{onlineCount}/{iotDevices.length} online</span>
-              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Refresh"><RefreshCw size={12} /></button>
+              <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Refresh" onClick={() => notify('Refreshing data...', 'info')}><RefreshCw size={12} /></button>
             </div>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>
@@ -223,9 +225,9 @@ export function InfraPage() {
         <div className="card">
           <div className="card-header">
             <span className="card-title">Connected Data Sources</span>
-            <button className="btn btn-primary btn-sm"><Plus size={12} /> Connect Source</button>
+            <button className="btn btn-primary btn-sm" onClick={() => notify('Opening creation form...', 'info')}><Plus size={12} /> Connect Source</button>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>
@@ -264,7 +266,7 @@ export function InfraPage() {
                       <td>
                         <div className="flex gap-1">
                           <button className="btn btn-ghost btn-sm btn-icon"><RefreshCw size={11} /></button>
-                          <button className="btn btn-ghost btn-sm btn-icon"><Settings2 size={11} /></button>
+                        <button className="btn btn-ghost btn-sm btn-icon" onClick={() => notify('Opening configuration...', 'info')}><Settings2 size={11} /></button>
                         </div>
                       </td>
                     </tr>

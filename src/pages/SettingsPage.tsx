@@ -118,12 +118,18 @@ export function SettingsPage() {
           </FormRow>
           <FormRow label="NVIDIA SDK Integration" hint="Enable NVIDIA Omniverse SDK for physics rendering.">
             <div className="flex items-center gap-3">
-              <Toggle on={true} onChange={() => {}} />
+              <Toggle
+                on={toggles.apiAccess}
+                onChange={() => toggle('apiAccess')}
+              />
               <span className="text-sm text-success">Connected · Omniverse v2024.2</span>
             </div>
           </FormRow>
           <FormRow label="AI Prediction Auto-Run" hint="Automatically run predictions when simulations complete.">
-            <Toggle on={true} onChange={() => {}} />
+            <Toggle
+              on={toggles.auditLog}
+              onChange={() => toggle('auditLog')}
+            />
           </FormRow>
         </div>
       )}
@@ -154,17 +160,17 @@ export function SettingsPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
             {apiKeys.map(k => (
               <div key={k.name} className="card" style={{ padding: '14px 16px' }}>
-                <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
-                  <div className="flex items-center gap-3">
-                    <div style={{ width: 30, height: 30, borderRadius: 7, background: 'rgba(42,107,219,0.12)', border: '1px solid rgba(42,107,219,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="flex items-start justify-between" style={{ marginBottom: 10, gap: 8 }}>
+                  <div className="flex items-center gap-3" style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 7, background: 'rgba(42,107,219,0.12)', border: '1px solid rgba(42,107,219,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <Key size={12} color="var(--blue)" />
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 500, fontSize: 12.5 }}>{k.name}</div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 500, fontSize: 12.5, wordBreak: 'break-word' }}>{k.name}</div>
                       <div className="text-muted text-xs text-mono">Created {k.created} · Used {k.lastUsed}</div>
                     </div>
                   </div>
-                  <span className="badge badge-muted">{k.scope}</span>
+                  <span className="badge badge-muted" style={{ flexShrink: 0 }}>{k.scope}</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ flexWrap: 'wrap' }}>
                   <div style={{ flex: '1 1 160px', background: 'var(--bg-overlay)', border: '1px solid var(--border)', borderRadius: 6, padding: '7px 12px', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -188,13 +194,13 @@ export function SettingsPage() {
       {tab === 'billing' && (
         <div style={{ maxWidth: 820 }}>
           <div style={{ background: 'linear-gradient(135deg, rgba(42,107,219,0.15) 0%, rgba(59,196,232,0.08) 100%)', border: '1px solid rgba(42,107,219,0.25)', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+            <div className="flex items-start justify-between" style={{ marginBottom: 16, gap: 12 }}>
               <div>
                 <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--cyan)', letterSpacing: '0.1em', marginBottom: 6 }}>CURRENT PLAN</div>
                 <div style={{ fontSize: 22, fontWeight: 700, fontFamily: 'var(--font-display)' }}>Enterprise</div>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 28, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--cyan)' }}>$2,400<span style={{ fontSize: 14, fontWeight: 400, color: 'var(--text-secondary)' }}>/mo</span></div>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontSize: 28, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--cyan)', whiteSpace: 'nowrap' }}>$2,400<span style={{ fontSize: 14, fontWeight: 400, color: 'var(--text-secondary)' }}>/mo</span></div>
                 <div className="text-muted text-xs text-mono">Billed annually · Renews Jan 1 2026</div>
               </div>
             </div>
@@ -284,7 +290,15 @@ export function SettingsPage() {
                 <div className="flex items-center gap-3" style={{ flexShrink: 0 }}>
                   <span className={`badge ${rule.severity === 'critical' ? 'badge-error' : 'badge-warning'}`}>{rule.severity}</span>
                   <span className="text-muted text-xs text-mono">{rule.channel}</span>
-                  <button className="btn btn-ghost btn-sm btn-icon"><Settings size={11} /></button>
+                  <button
+                    className="btn btn-ghost btn-sm btn-icon"
+                    type="button"
+                    onClick={() => {
+                      setTab('notifications')
+                    }}
+                  >
+                    <Settings size={11} />
+                  </button>
                 </div>
               </div>
             ))}

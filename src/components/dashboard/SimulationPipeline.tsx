@@ -30,7 +30,7 @@ export function SimulationPipeline() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'stretch', gap: 0, flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div className="sim-pipeline-stages" style={{ display: 'flex', alignItems: 'stretch', gap: 0, flexWrap: 'wrap', justifyContent: 'center' }}>
         {stages.map((stage, i) => {
           const Icon = stage.icon
           const badge = statusBadge[stage.status]
@@ -38,7 +38,7 @@ export function SimulationPipeline() {
           const isActive = stage.status === 'active' || stage.status === 'running'
 
           return (
-            <div key={stage.label} style={{ display: 'flex', alignItems: 'center', flex: '1 1 120px' }}>
+            <div key={stage.label} className="sim-pipeline-stage" style={{ display: 'flex', alignItems: 'center', flex: '1 1 120px' }}>
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ export function SimulationPipeline() {
 
               {/* Connector arrow */}
               {!isLast && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 4px', flexShrink: 0 }}>
+                <div className="sim-pipeline-arrow" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 4px', flexShrink: 0 }}>
                   <div style={{ width: 20, height: 2, background: 'linear-gradient(90deg, #2A6BDB, #3BC4E8)', position: 'relative', overflow: 'hidden' }}>
                     <motion.div
                       animate={{ x: ['-100%', '150%'] }}

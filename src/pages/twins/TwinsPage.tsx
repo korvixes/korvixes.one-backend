@@ -35,7 +35,7 @@ function TwinsList() {
           <button className="btn btn-ghost btn-sm"><Filter size={13} /> Filter</button>
           <button className="btn btn-ghost btn-sm"><RefreshCw size={13} /> Sync All</button>
         </div>
-        <div className="flex gap-2" style={{ flexShrink: 0 }}>
+        <div className="flex gap-2" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
           <NavLink to="/twins/templates" className="btn btn-ghost btn-sm"><Sparkles size={13} /> Templates</NavLink>
           <NavLink to="/twins/create" className="btn btn-primary btn-sm"><Plus size={14} /> Create Twin</NavLink>
         </div>
@@ -57,8 +57,8 @@ function TwinsList() {
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto' }}>
-        <table className="data-table">
+        <div className="data-table-wrapper">
+        <table className="data-table twins-list-table">
           <thead>
             <tr>
               {['', 'Twin ID', 'Name', 'Type', 'Model', 'Status', 'Devices', 'Accuracy', 'Last Sync', ''].map((h, i) => (
@@ -202,15 +202,15 @@ function TwinsTemplates() {
   const navigate = useNavigate()
   return (
     <div>
-      <div className="flex items-center justify-between" style={{ marginBottom: 20 }}>
-        <div className="flex items-center gap-2">
-          <button className="btn btn-ghost btn-sm btn-icon" onClick={() => navigate('/twins')}><ArrowLeft size={13} /></button>
-          <div>
+      <div className="flex items-center justify-between" style={{ marginBottom: 20, gap: 8, flexWrap: 'wrap' }}>
+        <div className="flex items-center gap-2" style={{ minWidth: 0, flex: '1 1 auto' }}>
+          <button className="btn btn-ghost btn-sm btn-icon" style={{ flexShrink: 0 }} onClick={() => navigate('/twins')}><ArrowLeft size={13} /></button>
+          <div style={{ minWidth: 0 }}>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700 }}>Twin Templates</h2>
             <div className="text-muted text-xs text-mono">// Curated starting points for new digital twins</div>
           </div>
         </div>
-        <NavLink to="/twins/create" className="btn btn-primary btn-sm"><Plus size={13} /> New From Scratch</NavLink>
+        <NavLink to="/twins/create" className="btn btn-primary btn-sm" style={{ flexShrink: 0 }}><Plus size={13} /> New From Scratch</NavLink>
       </div>
 
       <div className="grid-3">

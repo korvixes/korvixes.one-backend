@@ -66,7 +66,7 @@ export function SystemHealth() {
     <div className="glass-card" style={{ padding: 20 }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6', marginBottom: 16 }}>System Health</div>
 
-      <div className="rg-charts-pair" style={{ gap: 20 }}>
+      <div className="rg-charts-pair sh-responsive" style={{ gap: 20 }}>
         {/* Left: gauges */}
         <div>
           <GaugeBar label="CPU Usage" value={cpuVal} color="#2A6BDB" />

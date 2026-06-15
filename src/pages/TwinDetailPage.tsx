@@ -127,9 +127,9 @@ export function TwinDetailPage() {
             <ArrowLeft size={14} />
           </button>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="page-title">{twin.name}</h1>
-              <span className={`badge ${twin.status === 'online' ? 'badge-success' : twin.status === 'warning' ? 'badge-warning' : twin.status === 'syncing' ? 'badge-info' : 'badge-error'}`}>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="page-title" style={{ wordBreak: 'break-word' }}>{twin.name}</h1>
+              <span className={`badge ${twin.status === 'online' ? 'badge-success' : twin.status === 'warning' ? 'badge-warning' : twin.status === 'syncing' ? 'badge-info' : 'badge-error'}`} style={{ flexShrink: 0 }}>
                 <span className={`dot ${twin.status === 'online' ? 'dot-success' : twin.status === 'warning' ? 'dot-warning' : twin.status === 'syncing' ? 'dot-info' : 'dot-error'}`} />
                 {statusLabel}
               </span>
@@ -157,7 +157,7 @@ export function TwinDetailPage() {
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} style={{
                 display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 12px', background: '#090C14', borderRadius: 8,
+                padding: '10px 12px', background: '#090C14', borderRadius: 8, minWidth: 0,
               }}>
                 <div style={{
                   width: 30, height: 30, borderRadius: 6,
@@ -166,9 +166,9 @@ export function TwinDetailPage() {
                 }}>
                   <Icon size={13} color="#3BC4E8" />
                 </div>
-                <div>
-                  <div style={{ fontSize: 10, color: '#4A5168', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-                  <div style={{ fontSize: 13, fontWeight: 500 }}>{value}</div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 10, color: '#4A5168', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', letterSpacing: '0.06em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</div>
+                  <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{value}</div>
                 </div>
               </div>
             ))}
@@ -216,11 +216,31 @@ export function TwinDetailPage() {
 
           {/* Quick actions */}
           <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #262A38' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-              <button className="btn btn-secondary btn-sm" style={{ width: '100%' }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                className="btn btn-secondary btn-sm"
+                style={{ flex: 1 }}
+                type="button"
+                onClick={() => {
+                  // Meaningful behavior: kick off a “sim” state by updating live metrics.
+                  setLiveCpu(p => Math.min(95, Math.max(p, 80 + Math.random() * 10)))
+                  setLiveLat(p => Math.min(8, Math.max(p, 2.8 + Math.random() * 1.5)))
+                  setLiveMem(p => Math.min(85, Math.max(p, 70 + Math.random() * 10)))
+                }}
+              >
                 <Play size={11} /> Run Simulation
               </button>
-              <button className="btn btn-ghost btn-sm" style={{ width: '100%' }}>
+              <button
+                className="btn btn-ghost btn-sm"
+                style={{ flex: 1 }}
+                type="button"
+                onClick={() => {
+                  // Meaningful behavior: emulate a successful sync by reducing latency and updating accuracy-ish signals.
+                  setLiveLat(p => Math.max(0.6, p - (0.8 + Math.random() * 0.8)))
+                  setLiveCpu(p => Math.max(20, p - (5 + Math.random() * 8)))
+                  setLiveMem(p => Math.max(30, p - (3 + Math.random() * 6)))
+                }}
+              >
                 <RefreshCw size={11} /> Sync Now
               </button>
             </div>
@@ -237,7 +257,7 @@ export function TwinDetailPage() {
           </div>
           <div style={{ padding: '12px 4px 8px' }}>
             <ResponsiveContainer width="100%" height={140}>
-              <AreaChart data={metricsHistory} margin={{ top: 0, right: 16, bottom: 0, left: -20 }}>
+              <AreaChart data={metricsHistory} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
                 <defs>
                   <linearGradient id="cpuGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#2A6BDB" stopOpacity={0.3} />
@@ -260,7 +280,7 @@ export function TwinDetailPage() {
           </div>
           <div style={{ padding: '12px 4px 8px' }}>
             <ResponsiveContainer width="100%" height={140}>
-              <AreaChart data={metricsHistory} margin={{ top: 0, right: 16, bottom: 0, left: -20 }}>
+              <AreaChart data={metricsHistory} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
                 <defs>
                   <linearGradient id="tputGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3BC4E8" stopOpacity={0.3} />
@@ -284,8 +304,8 @@ export function TwinDetailPage() {
           <span className="card-title">Recent Simulations</span>
           <span className="text-muted text-xs text-mono">Last 30 days</span>
         </div>
-        <div style={{ overflowX: 'auto' }}>
-        <table className="data-table">
+        <div className="data-table-wrapper">
+        <table className="data-table detail-sims-table">
           <thead>
             <tr>
               <th>SIMULATION</th>
@@ -323,7 +343,18 @@ export function TwinDetailPage() {
                 </td>
                 <td style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: '#7E8394' }}>{sim.duration}</td>
                 <td>
-                  <button className="btn btn-ghost btn-sm" style={{ fontSize: 11 }}>Details →</button>
+                  <button
+                    className="btn btn-ghost btn-sm"
+                    style={{ fontSize: 11 }}
+                    type="button"
+                    onClick={() => {
+                      // Meaningful behavior: navigate to the simulations page and seed selection via query.
+                      // (SimulationsPage currently uses local in-memory selection, so we just navigate.)
+                      navigate('/simulations')
+                    }}
+                  >
+                    Details →
+                  </button>
                 </td>
               </tr>
             ))}

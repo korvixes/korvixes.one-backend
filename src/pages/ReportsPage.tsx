@@ -227,12 +227,12 @@ export function ReportsPage() {
 
         <div className="card-header">
           <span className="card-title">Saved Reports</span>
-          <div className="flex gap-2">
+          <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
             <button className="btn btn-ghost btn-sm"><Filter size={12} /> Filter</button>
             <button className="btn btn-primary btn-sm"><FileText size={12} /> Generate Report</button>
           </div>
         </div>
-        <div style={{ overflowX: 'auto' }}>
+        <div className="data-table-wrapper">
           <table className="data-table">
             <thead>
               <tr>

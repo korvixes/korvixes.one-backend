@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, Box, Play, Brain, Server, Activity,
@@ -134,6 +134,10 @@ function GroupItem({
   const childActive = item.children?.some(c => location.pathname.startsWith(c.href)) ?? false
   const [open, setOpen] = useState(childActive)
 
+  useEffect(() => {
+    if (childActive) setOpen(true)
+  }, [childActive])
+
   if (collapsed) {
     // In collapsed mode show just the parent icon as a tooltip link to first child.
     const first = item.children?.[0]
@@ -209,14 +213,14 @@ export function Sidebar({
           <img
             src={logoHeader}
             alt="K"
-            className="h-7 w-7 shrink-0 rounded object-contain brightness-0 invert-[0.7] transition-all duration-300 group-hover:scale-110 group-hover:brightness-100"
+            className="h-8 w-8 shrink-0 rounded object-contain brightness-0 invert-[0.7] transition-all duration-300 group-hover:scale-110 group-hover:brightness-100"
           />
         ) : (
           <>
             <img
               src={logoHeader}
               alt="KORVIXES"
-              className="h-10 sm:h-11 max-w-[160px] object-contain transition-all duration-300 group-hover:scale-[1.02] group-hover:drop-shadow-[0_0_6px_rgba(42,107,219,0.4)]"
+              className="h-12 sm:h-[52px] max-w-[180px] object-contain transition-all duration-300 group-hover:scale-[1.02] group-hover:drop-shadow-[0_0_6px_rgba(42,107,219,0.4)]"
             />
             <div className="min-w-0 flex-1">
               <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ink-muted leading-tight">

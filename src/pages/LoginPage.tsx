@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { Chrome, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import logoSrc from '../assets/logo-header.webp'
 
 export default function LoginPage() {
   const { user, loading, error, authLoading, signInWithGoogle, signInWithEmail, clearError } = useAuth()
@@ -58,13 +59,14 @@ export default function LoginPage() {
         <div className="rounded-xl border border-line bg-bg-surface p-6 sm:p-8 shadow-card">
           {/* Logo / Brand */}
           <div className="mb-6 sm:mb-8 text-center">
-            <div className="mx-auto mb-3 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan shadow-glow">
-              <span className="text-base sm:text-lg font-bold font-display text-white">K</span>
+            <div className="mx-auto mb-3 flex items-center justify-center">
+              <img
+                src={logoSrc}
+                alt="Korvixes"
+                className="h-12 sm:h-[52px] max-w-[160px] sm:max-w-[180px] object-contain"
+              />
             </div>
-            <h1 className="text-lg sm:text-xl font-bold font-display text-ink-primary tracking-tight">
-              Korvixes
-            </h1>
-            <p className="mt-1 text-[12px] text-ink-muted">
+            <p className="mt-3 text-[12px] text-ink-muted">
               Industrial Intelligence Platform
             </p>
           </div>

@@ -26,12 +26,12 @@ export function TwinVisualizer() {
   return (
     <div className="glass-card" style={{ padding: 20, position: 'relative', overflow: 'hidden' }}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div>
+      <div className="tw-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, gap: 8 }}>
+        <div className="tw-header-left" style={{ minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6' }}>Digital Twin — Factory Floor A</div>
           <div style={{ fontSize: 11, color: '#7E8394', marginTop: 2 }}>Real-time asset topology · Zone 3</div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="tw-header-right" style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 5,
             background: 'rgba(76,195,138,0.1)', border: '1px solid rgba(76,195,138,0.25)',
@@ -52,7 +52,7 @@ export function TwinVisualizer() {
       </div>
 
       {/* Visualization canvas */}
-      <div style={{
+      <div className="twin-viz-canvas" style={{
         position: 'relative', height: 200,
         background: '#090C14',
         borderRadius: 6, border: '1px solid #262A38',

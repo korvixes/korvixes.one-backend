@@ -228,7 +228,7 @@ export function DashboardPage() {
           <div className="absolute top-0 left-0 right-0 h-px overflow-hidden opacity-30">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-blue to-transparent animate-shimmer" style={{ animationDelay: '0.5s' }} />
           </div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6', marginBottom: 14 }}>Twin Distribution</div>
+          <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6', marginBottom: 14, wordBreak: 'break-word' }}>Twin Distribution</div>
           <ResponsiveContainer width="100%" height={130}>
             <PieChart>
               <Pie data={twinTypeData} cx="50%" cy="50%" innerRadius={38} outerRadius={58} paddingAngle={3} dataKey="value">
@@ -284,17 +284,17 @@ export function DashboardPage() {
 
       {/* Section: Recent twins table */}
       <section>
-        <div className="glass-card" style={{ padding: 20 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6' }}>Recent Digital Twins</div>
-            <button className="btn btn-ghost" style={{ fontSize: 12, whiteSpace: 'nowrap' }} onClick={() => navigate('/digital-twins')}>View all →</button>
+        <div className="glass-card" style={{ padding: '16px 20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 8 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6', whiteSpace: 'nowrap' }}>Recent Digital Twins</div>
+            <button className="btn btn-ghost" style={{ fontSize: 12, whiteSpace: 'nowrap', flexShrink: 0 }} onClick={() => navigate('/digital-twins')}>View all →</button>
           </div>
-          <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div className="data-table-wrapper">
+          <table className="data-table">
             <thead>
-              <tr style={{ borderBottom: '1px solid #262A38' }}>
+              <tr>
                 {['Twin ID', 'Name', 'Type', 'Status', 'Devices', 'Accuracy', 'Last Sync'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '6px 10px', fontSize: 10, color: '#4A5168', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>{h}</th>
+                  <th key={h}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -302,27 +302,17 @@ export function DashboardPage() {
               {recentTwins.map(row => (
                 <tr
                   key={row.id}
-                  style={{ borderBottom: '1px solid #1C2030', cursor: 'pointer', transition: 'background 0.15s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#10141E' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent' }}
+                  style={{ cursor: 'pointer' }}
+                  className="hover:bg-bg-overlay"
                   onClick={() => navigate(`/digital-twins/${row.id.toLowerCase()}`)}
                 >
-                  <td style={{ padding: '10px', fontSize: 12, fontFamily: 'JetBrains Mono', color: '#2A6BDB' }}>{row.id}</td>
-                  <td style={{ padding: '10px', fontSize: 12, color: '#F0F1F6', fontWeight: 500 }}>{row.name}</td>
-                  <td style={{ padding: '10px', fontSize: 11 }}>
-                    <span className={`badge ${typeBadgeClass[row.type] || 'badge-muted'}`}>{row.type}</span>
-                  </td>
-                  <td style={{ padding: '10px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                      <span className={`status-dot ${statusDotClass[row.status] || 'status-idle'}`} />
-                      <span style={{ fontSize: 11, color: '#7E8394', textTransform: 'capitalize' }}>{row.status}</span>
-                    </div>
-                  </td>
-                  <td style={{ padding: '10px', fontSize: 12, color: '#7E8394', fontFamily: 'JetBrains Mono' }}>{row.devices}</td>
-                  <td style={{ padding: '10px', fontSize: 12, fontFamily: 'JetBrains Mono', color: row.accuracy > 99 ? '#4CC38A' : row.accuracy > 97 ? '#D4A843' : '#7E8394' }}>
-                    {row.accuracy}%
-                  </td>
-                  <td style={{ padding: '10px', fontSize: 11, color: '#4A5168', fontFamily: 'JetBrains Mono' }}>{row.sync}</td>
+                  <td><span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--cyan)' }}>{row.id}</span></td>
+                  <td><span style={{ fontWeight: 500, fontSize: 12.5 }}>{row.name}</span></td>
+                  <td><span className={`badge ${typeBadgeClass[row.type] || 'badge-muted'}`}>{row.type}</span></td>
+                  <td><div className="flex items-center gap-1"><span className={`status-dot ${statusDotClass[row.status] || 'status-idle'}`} /><span className="text-secondary text-sm" style={{ textTransform: 'capitalize' }}>{row.status}</span></div></td>
+                  <td><span className="text-mono text-sm">{row.devices}</span></td>
+                  <td><span className="text-mono text-sm" style={{ color: row.accuracy > 99 ? 'var(--success)' : row.accuracy > 97 ? 'var(--warning)' : 'var(--text-muted)' }}>{row.accuracy}%</span></td>
+                  <td><span className="text-muted text-xs text-mono">{row.sync}</span></td>
                 </tr>
               ))}
             </tbody>

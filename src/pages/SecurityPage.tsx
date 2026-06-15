@@ -57,8 +57,8 @@ export function SecurityPage() {
               { key: 'sso' as const, label: 'SSO / SAML', desc: 'Single Sign-On via corporate identity provider' },
               { key: 'apiAccess' as const, label: 'API Access', desc: 'Allow external API key authentication' },
             ].map(item => (
-              <div key={item.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#090C14', borderRadius: 8 }}>
-                <div>
+              <div key={item.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#090C14', borderRadius: 8, gap: 12 }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
                   <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 2 }}>{item.label}</div>
                   <div style={{ fontSize: 11, color: '#7E8394' }}>{item.desc}</div>
                 </div>
@@ -85,21 +85,21 @@ export function SecurityPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {sessions.map(s => (
               <div key={s.device} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '12px 14px', background: '#090C14', borderRadius: 8,
+                display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+                padding: '12px 14px', background: '#090C14', borderRadius: 8, gap: 8,
                 border: s.current ? '1px solid rgba(59,196,232,0.2)' : '1px solid transparent',
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <Smartphone size={14} color={s.current ? '#3BC4E8' : '#7E8394'} />
-                  <div>
-                    <div style={{ fontSize: 12.5, fontWeight: 500 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
+                  <Smartphone size={14} color={s.current ? '#3BC4E8' : '#7E8394'} style={{ flexShrink: 0 }} />
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 12.5, fontWeight: 500, wordWrap: 'break-word' }}>
                       {s.device}
                       {s.current && <span style={{ marginLeft: 6, fontSize: 10, color: '#3BC4E8', fontFamily: 'JetBrains Mono' }}>(This device)</span>}
                     </div>
                     <div style={{ fontSize: 11, color: '#4A5168', fontFamily: 'JetBrains Mono' }}>{s.ip}</div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                   <Clock size={10} color="#4A5168" />
                   <span style={{ fontSize: 11, color: '#7E8394', fontFamily: 'JetBrains Mono' }}>{s.lastActive}</span>
                   {!s.current && <button className="btn btn-danger btn-sm btn-icon"><span style={{ fontSize: 10 }}>✕</span></button>}

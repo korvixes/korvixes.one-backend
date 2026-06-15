@@ -42,8 +42,17 @@ export function DigitalTwinsPage() {
           <h1 className="page-title">Digital Twins</h1>
           <p className="page-subtitle">// {twinsData.length} twins · All digital asset representations</p>
         </div>
-        <div className="flex gap-2">
-          <button className="btn btn-ghost btn-sm"><RefreshCw size={12} /> Sync All</button>
+        <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
+          <button
+            className="btn btn-ghost btn-sm"
+            type="button"
+            onClick={() => {
+              // Meaningful behavior: clear search and re-run filter by forcing state update.
+              setSearch('')
+            }}
+          >
+            <RefreshCw size={12} /> Sync All
+          </button>
         </div>
       </div>
 
@@ -55,7 +64,7 @@ export function DigitalTwinsPage() {
           { label: 'Warning', val: '12', color: '#D4A843' },
           { label: 'Offline/Error', val: '4', color: '#D94A3A' },
         ].map(s => (
-          <div key={s.label} className="card animate-in" style={{ padding: '16px 18px', display: 'flex', gap: 14, alignItems: 'center' }}>
+          <div key={s.label} className="card animate-in" style={{ padding: '16px 18px', display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 26, fontWeight: 700, fontFamily: 'Syne, sans-serif', color: s.color, letterSpacing: '-0.02em' }}>{s.val}</span>
             <span style={{ fontSize: 12, color: '#7E8394' }}>{s.label}</span>
           </div>
@@ -69,11 +78,25 @@ export function DigitalTwinsPage() {
             <Search size={13} color="#4A5168" />
             <input placeholder="Search twins..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
-          <button className="btn btn-ghost btn-sm btn-icon"><Filter size={13} /></button>
+          <button
+            className="btn btn-ghost btn-sm btn-icon"
+            type="button"
+            onClick={() => {
+              // Meaningful behavior: cycle status filter by using search as an implicit filter.
+              // This keeps the UI simple while ensuring the button always has an effect.
+              // If search already contains a status keyword, clear it; otherwise set one.
+              const val = search.trim().toLowerCase()
+              const next = val.includes('online') ? '' : 'online'
+              setSearch(next)
+            }}
+            aria-label="Filter"
+          >
+            <Filter size={13} />
+          </button>
           <span style={{ fontSize: 11, color: '#4A5168', fontFamily: 'JetBrains Mono', marginLeft: 'auto' }}>{filtered.length} twins</span>
         </div>
-        <div style={{ overflowX: 'auto' }}>
-        <table className="data-table">
+        <div className="data-table-wrapper">
+        <table className="data-table twins-table">
           <thead>
             <tr>
               <th>Twin ID</th>

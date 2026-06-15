@@ -124,9 +124,13 @@ code, .mono { font-family: var(--font-mono); }
 
 /* ─── Grid helpers ───────────────────────────────────────────────────── */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-2 > * { min-width: 0; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-3 > * { min-width: 0; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-4 > * { min-width: 0; }
 .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.grid-auto > * { min-width: 0; }
 
 @media (max-width: 1024px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -319,8 +323,11 @@ select.input {
   border: 1px solid var(--border);
   border-radius: 7px;
   padding: 3px;
+  width: 100%;
 }
 .tab-item {
+  flex: 1;
+  text-align: center;
   padding: 6px 14px;
   border-radius: 5px;
   font-size: 12px;
@@ -332,6 +339,9 @@ select.input {
   background: none;
   font-family: var(--font-body);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .tab-item:hover { color: var(--text-primary); }
 .tab-item.active {
@@ -362,6 +372,23 @@ select.input {
   width: 100%;
 }
 .search-bar input::placeholder { color: var(--text-muted); }
+
+/* ─── Data table scroll wrapper ───────────────────────────────────────── */
+.data-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.data-table-wrapper::-webkit-scrollbar {
+  height: 4px;
+}
+.data-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+.data-table-wrapper::-webkit-scrollbar-thumb {
+  background: #262A38;
+  border-radius: 2px;
+}
 
 /* ─── Section dividers ───────────────────────────────────────────────── */
 .section-label {
@@ -586,41 +613,65 @@ select.input {
   grid-template-columns: 1.5fr 1fr;
   gap: 16px;
 }
+.rg-main-panel > * {
+  min-width: 0;
+}
 .rg-charts-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 16px;
+}
+.rg-charts-row > * {
+  min-width: 0;
 }
 .rg-content-sidebar {
   display: grid;
   grid-template-columns: 1fr 340px;
   gap: 16px;
 }
+.rg-content-sidebar > * {
+  min-width: 0;
+}
 .rg-health-feed {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 16px;
+}
+.rg-health-feed > * {
+  min-width: 0;
 }
 .rg-overview-status {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 16px;
 }
+.rg-overview-status > * {
+  min-width: 0;
+}
 .rg-profile-layout {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 24px;
+}
+.rg-profile-layout > * {
+  min-width: 0;
 }
 .rg-charts-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+.rg-charts-pair > * {
+  min-width: 0;
+}
 .rg-form-row {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 24px;
   align-items: flex-start;
+}
+.rg-form-row > * {
+  min-width: 0;
 }
 .rg-theme-picker {
   display: grid;
@@ -668,10 +719,248 @@ select.input {
   display: none;
 }
 
+/* ─── Page header responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+}
+
+/* ─── Twin visualizer responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .tw-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .tw-header-left {
+    margin-bottom: 6px;
+  }
+  .tw-header-right {
+    justify-content: flex-start !important;
+  }
+  .twin-viz-canvas {
+    height: 280px !important;
+  }
+}
+@media (max-width: 400px) {
+  .twin-viz-canvas {
+    overflow-x: auto !important;
+  }
+}
+
+/* ─── System Health responsive ───────────────────────────────────────── */
+@media (max-width: 640px) {
+  .sh-responsive {
+    flex-direction: column !important;
+  }
+}
+
+/* ─── Mobile card action buttons ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .card-actions-wrap {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+/* ─── Simulation pipeline responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .sim-pipeline-stages {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .sim-pipeline-stage {
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+  }
+  .sim-pipeline-arrow {
+    transform: none !important;
+    padding: 4px 16px !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+  .sim-pipeline-arrow > div {
+    width: 100% !important;
+    height: 2px !important;
+  }
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hide-mobile { display: none !important; }
 }
 @media (min-width: 769px) {
   .show-mobile { display: none !important; }
+}
+
+/* ─── Prevent horizontal overflow on any page ──────────────────────── */
+.page {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ─── Comprehensive mobile overrides ────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Force all flex rows to wrap on mobile */
+  .card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px 10px;
+  }
+  .card {
+    padding: 14px !important;
+  }
+  .card-body {
+    padding: 14px !important;
+  }
+  
+  /* Ensure flex containers wrap */
+  .flex-wrap-on-mobile {
+    flex-wrap: wrap !important;
+  }
+
+  /* Data tables - ensure scrollable */
+  .data-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Search bars fill width */
+  .search-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Tabs smaller on mobile */
+  .tab-item {
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+
+  /* Page adjustments */
+  .page {
+    padding: 12px;
+  }
+
+  /* Reduce font sizes */
+  .page-title {
+    font-size: 17px;
+  }
+  .page-subtitle {
+    font-size: 10px;
+  }
+
+  /* Grid adjustments */
+  .grid-4, .grid-3, .grid-2 {
+    gap: 10px;
+  }
+
+  /* Badges smaller on mobile */
+  .badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  /* Buttons smaller on mobile */
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  /* Reduce card padding inside */
+  .card-header {
+    padding: 12px 14px 10px;
+  }
+
+  /* Stats cards adjustments */
+  .card > div[style*="font-size: 22px"] {
+    font-size: 18px !important;
+  }
+
+  /* Ensure no fixed widths cause overflow */
+  [style*="min-width"] {
+    max-width: 100%;
+  }
+
+  /* Data table cells */
+  .data-table th,
+  .data-table td {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  /* SimulationsPage: hide DURATION (5) and PRIORITY (7) */
+  .sims-data-table th:nth-child(5),
+  .sims-data-table td:nth-child(5),
+  .sims-data-table th:nth-child(7),
+  .sims-data-table td:nth-child(7) {
+    display: none;
+  }
+  /* DigitalTwinsPage: hide Model (4) and Devices (6) */
+  .twins-table th:nth-child(4),
+  .twins-table td:nth-child(4),
+  .twins-table th:nth-child(6),
+  .twins-table td:nth-child(6) {
+    display: none;
+  }
+  /* TwinDetailPage: hide DURATION (4) */
+  .detail-sims-table th:nth-child(4),
+  .detail-sims-table td:nth-child(4) {
+    display: none;
+  }
+  /* TwinsPage list: hide Model (5) and Devices (7) */
+  .twins-list-table th:nth-child(5),
+  .twins-list-table td:nth-child(5),
+  .twins-list-table th:nth-child(7),
+  .twins-list-table td:nth-child(7) {
+    display: none;
+  }
+  /* AI Models table: hide F1 SCORE (3) and CORRECT (5) */
+  .ai-models-table th:nth-child(3),
+  .ai-models-table td:nth-child(3),
+  .ai-models-table th:nth-child(5),
+  .ai-models-table td:nth-child(5) {
+    display: none;
+  }
+}
+
+/* Hide more columns on very small screens */
+@media (max-width: 480px) {
+  /* SimulationsPage: hide TWIN (4) and ACCURACY (6) */
+  .sims-data-table th:nth-child(4),
+  .sims-data-table td:nth-child(4),
+  .sims-data-table th:nth-child(6),
+  .sims-data-table td:nth-child(6) {
+    display: none;
+  }
+  /* DigitalTwinsPage: hide Type (3) and Last Sync (8) */
+  .twins-table th:nth-child(3),
+  .twins-table td:nth-child(3),
+  .twins-table th:nth-child(8),
+  .twins-table td:nth-child(8) {
+    display: none;
+  }
+  /* TwinsPage list: hide Type (4) and Last Sync (9) */
+  .twins-list-table th:nth-child(4),
+  .twins-list-table td:nth-child(4),
+  .twins-list-table th:nth-child(9),
+  .twins-list-table td:nth-child(9) {
+    display: none;
+  }
+  /* AI Models table: hide PREDICTIONS (4) and PERFORMANCE (6) */
+  .ai-models-table th:nth-child(4),
+  .ai-models-table td:nth-child(4),
+  .ai-models-table th:nth-child(6),
+  .ai-models-table td:nth-child(6) {
+    display: none;
+  }
+}
+
+/* ─── Tablet adjustments ────────────────────────────────────────────── */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .page {
+    padding: 18px;
+  }
 }

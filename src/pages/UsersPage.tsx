@@ -4,6 +4,7 @@ import {
   Filter, Edit2,
   Key, Eye, Clock, CheckCircle, XCircle
 } from 'lucide-react'
+import { useToast } from '../hooks/useToast'
 
 const users = [
   { id: 'USR-001', name: 'Nishant Pereira', email: 'n.pereira@korvixes.io', role: 'Super Admin', status: 'active', lastLogin: '2m ago', twins: 12, simulations: 84, joined: 'Jan 2024', avatar: 'NP' },
@@ -51,6 +52,7 @@ const statusConf = {
 } as const
 
 export function UsersPage() {
+  const { notify } = useToast()
   const [tab, setTab] = useState<'users' | 'roles' | 'activity'>('users')
   const [search, setSearch] = useState('')
 
@@ -68,8 +70,8 @@ export function UsersPage() {
           <p className="page-subtitle">// {users.filter(u=>u.status==='active').length} active · {users.length} total · {roles.length} roles</p>
         </div>
         <div className="flex gap-2" style={{ flexWrap: 'wrap' }}>
-          <button className="btn btn-ghost btn-sm"><Shield size={12} /> Manage Roles</button>
-          <button className="btn btn-primary btn-sm"><UserPlus size={13} /> Invite User</button>
+          <button className="btn btn-ghost btn-sm" onClick={() => notify('Opening role management...', 'info')}><Shield size={12} /> Manage Roles</button>
+          <button className="btn btn-primary btn-sm" onClick={() => notify('Opening invite dialog...', 'info')}><UserPlus size={13} /> Invite User</button>
         </div>
       </div>
 
@@ -114,16 +116,16 @@ export function UsersPage() {
       {tab === 'users' && (
         <div className="card">
           <div className="card-header">
-            <div className="flex gap-2 items-center">
-              <div className="search-bar" style={{ width: 240 }}>
+            <div className="flex gap-2 items-center" style={{ flexWrap: 'wrap' }}>
+              <div className="search-bar" style={{ width: 240, maxWidth: '100%' }}>
                 <Search size={12} color="var(--text-muted)" />
                 <input placeholder="Search users..." value={search} onChange={e => setSearch(e.target.value)} />
               </div>
-              <button className="btn btn-ghost btn-sm btn-icon"><Filter size={12} /></button>
+              <button className="btn btn-ghost btn-sm btn-icon" onClick={() => notify('Filter options opened', 'info')}><Filter size={12} /></button>
             </div>
             <span className="text-muted text-xs text-mono">{filtered.length} users</span>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>
@@ -169,10 +171,10 @@ export function UsersPage() {
                       <td><span className="text-muted text-xs text-mono">{u.joined}</span></td>
                       <td>
                         <div className="flex gap-1">
-                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Edit"><Edit2 size={11} /></button>
-                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Reset Password"><Key size={11} /></button>
-                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="View Activity"><Eye size={11} /></button>
-                          <button className="btn btn-danger btn-sm btn-icon" data-tooltip="Suspend"><XCircle size={11} /></button>
+                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Edit" onClick={() => notify('Editing user...', 'info')}><Edit2 size={11} /></button>
+                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="Reset Password" onClick={() => notify('Password reset email sent', 'success')}><Key size={11} /></button>
+                          <button className="btn btn-ghost btn-sm btn-icon" data-tooltip="View Activity" onClick={() => notify('Showing user activity...', 'info')}><Eye size={11} /></button>
+                          <button className="btn btn-danger btn-sm btn-icon" data-tooltip="Suspend" onClick={() => notify('User suspended', 'error')}><XCircle size={11} /></button>
                         </div>
                       </td>
                     </tr>
@@ -193,7 +195,7 @@ export function UsersPage() {
                 <div style={{ width: 36, height: 36, borderRadius: 9, background: `${r.color}18`, border: `1px solid ${r.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Shield size={16} color={r.color} />
                 </div>
-                <button className="btn btn-ghost btn-sm btn-icon"><Edit2 size={11} /></button>
+                <button className="btn btn-ghost btn-sm btn-icon" onClick={() => notify('Editing role permissions...', 'info')}><Edit2 size={11} /></button>
               </div>
               <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{r.name}</div>
               <div className="text-muted text-xs text-mono" style={{ marginBottom: 12 }}>{r.permissions}</div>
@@ -219,7 +221,7 @@ export function UsersPage() {
             <span className="card-title">Activity Log</span>
             <span className="text-muted text-xs text-mono">Last 24 hours</span>
           </div>
-          <div style={{ overflowX: 'auto' }}>
+          <div className="data-table-wrapper">
             <table className="data-table">
               <thead>
                 <tr>

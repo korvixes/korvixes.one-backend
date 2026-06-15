@@ -76,10 +76,12 @@ export default function ForgotPasswordPage() {
         <div className="rounded-xl border border-line bg-bg-surface p-6 sm:p-8 shadow-card">
           {/* Logo / Brand */}
           <div className="mb-6 sm:mb-8 text-center">
-            <div className="mx-auto mb-3 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan shadow-glow">
-              <span className="text-base sm:text-lg font-bold font-display text-white">K</span>
-            </div>
-            <h1 className="text-lg sm:text-xl font-bold font-display text-ink-primary tracking-tight">
+            <img
+              src="/logo-header.webp"
+              alt="Korvixes"
+              className="mx-auto h-12 sm:h-[52px] max-w-[160px] sm:max-w-[180px] object-contain"
+            />
+            <h1 className="mt-3 text-lg sm:text-xl font-bold font-display text-ink-primary tracking-tight">
               Reset Password
             </h1>
             <p className="mt-1 text-[12px] text-ink-muted">
