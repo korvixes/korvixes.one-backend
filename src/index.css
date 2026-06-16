@@ -94,6 +94,7 @@ code, .mono { font-family: var(--font-mono); }
   font-family: var(--font-mono);
   margin-top: 4px;
   letter-spacing: 0.02em;
+  word-break: break-word;
 }
 
 /* ─── Cards ──────────────────────────────────────────────────────────── */
@@ -682,13 +683,11 @@ select.input {
 @media (max-width: 1024px) {
   .rg-main-panel,
   .rg-content-sidebar,
+  .rg-charts-row,
   .rg-health-feed,
   .rg-overview-status,
   .rg-profile-layout {
     grid-template-columns: 1fr;
-  }
-  .rg-charts-row {
-    grid-template-columns: 1fr 1fr;
   }
   .rg-form-row {
     grid-template-columns: 1fr;
@@ -725,6 +724,9 @@ select.input {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+  }
+  .page-header > div:first-child {
+    margin-bottom: 4px;
   }
 }
 

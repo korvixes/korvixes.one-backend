@@ -79,7 +79,7 @@ export function SettingsPage() {
 
       {/* GENERAL */}
       {tab === 'general' && (
-        <div style={{ maxWidth: 820 }}>
+        <div>
           <div style={{ marginBottom: 6, paddingBottom: 16, borderBottom: '1px solid var(--border)', marginTop: 0 }}>
             <div className="section-label">Platform Identity</div>
           </div>
@@ -136,7 +136,7 @@ export function SettingsPage() {
 
       {/* SECURITY */}
       {tab === 'security' && (
-        <div style={{ maxWidth: 820 }}>
+        <div>
           <div className="section-label" style={{ marginBottom: 16 }}>Authentication</div>
           <FormRow label="Two-Factor Authentication" hint="Require 2FA for all admin accounts.">
             <Toggle on={toggles.twoFactor} onChange={() => toggle('twoFactor')} />
@@ -192,14 +192,14 @@ export function SettingsPage() {
 
       {/* BILLING */}
       {tab === 'billing' && (
-        <div style={{ maxWidth: 820 }}>
+        <div>
           <div style={{ background: 'linear-gradient(135deg, rgba(42,107,219,0.15) 0%, rgba(59,196,232,0.08) 100%)', border: '1px solid rgba(42,107,219,0.25)', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
-            <div className="flex items-start justify-between" style={{ marginBottom: 16, gap: 12 }}>
-              <div>
+            <div className="flex items-start gap-3" style={{ marginBottom: 16, flexWrap: 'wrap' }}>
+              <div style={{ minWidth: 0, flex: '1 1 160px' }}>
                 <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--cyan)', letterSpacing: '0.1em', marginBottom: 6 }}>CURRENT PLAN</div>
-                <div style={{ fontSize: 22, fontWeight: 700, fontFamily: 'var(--font-display)' }}>Enterprise</div>
+                <div style={{ fontSize: 22, fontWeight: 700, fontFamily: 'var(--font-display)', wordBreak: 'break-word' }}>Enterprise</div>
               </div>
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div style={{ flexShrink: 0 }}>
                 <div style={{ fontSize: 28, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--cyan)', whiteSpace: 'nowrap' }}>$2,400<span style={{ fontSize: 14, fontWeight: 400, color: 'var(--text-secondary)' }}>/mo</span></div>
                 <div className="text-muted text-xs text-mono">Billed annually · Renews Jan 1 2026</div>
               </div>
@@ -244,7 +244,7 @@ export function SettingsPage() {
 
       {/* NOTIFICATIONS */}
       {tab === 'notifications' && (
-        <div style={{ maxWidth: 820 }}>
+        <div>
           <div className="section-label" style={{ marginBottom: 16 }}>Channels</div>
           {[
             { key: 'emailAlerts', icon: Mail, label: 'Email Alerts', desc: 'Receive alerts via email', color: 'var(--blue)' },

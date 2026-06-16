@@ -205,9 +205,9 @@ export function DashboardPage() {
           <div className="absolute top-0 left-0 right-0 h-px overflow-hidden opacity-30">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-cyan to-transparent animate-shimmer" />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6' }}>Simulation Runs — 7 Days</div>
-            <span style={{ fontSize: 10, color: '#3BC4E8', fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#F0F1F6', wordBreak: 'break-word' }}>Simulation Runs — 7 Days</div>
+            <span style={{ fontSize: 10, color: '#3BC4E8', fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
               <BarChart2 size={11} /> Click to expand
             </span>
           </div>

@@ -23,6 +23,7 @@ const templates = [
 ]
 
 function TwinsList() {
+  const navigate = useNavigate()
   return (
     <div>
       {/* Header actions */}
@@ -68,7 +69,9 @@ function TwinsList() {
           </thead>
           <tbody>
             {twinsData.map(row => (
-              <tr key={row.id} style={{ cursor: 'pointer' }}>
+              <tr key={row.id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/digital-twins/${row.id.toLowerCase()}`)}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(16,20,30,0.6)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '' }}>
                 <td style={{ width: 18 }}>
                   <div style={{ width: 7, height: 7, borderRadius: 2, background: 'var(--blue)', opacity: 0.5 }} />
                 </td>
@@ -87,7 +90,7 @@ function TwinsList() {
                 <td className="text-mono text-xs text-secondary">{row.devices}</td>
                 <td><span className="text-mono text-xs" style={{ color: row.accuracy > 99 ? 'var(--success)' : row.accuracy > 97 ? 'var(--warning)' : 'var(--error)' }}>{row.accuracy}%</span></td>
                 <td className="text-mono text-xs text-muted">{row.sync}</td>
-                <td><button className="btn btn-ghost btn-sm">View →</button></td>
+                <td><button className="btn btn-ghost btn-sm" onClick={e => { e.stopPropagation(); navigate(`/digital-twins/${row.id.toLowerCase()}`) }}>View →</button></td>
               </tr>
             ))}
           </tbody>
